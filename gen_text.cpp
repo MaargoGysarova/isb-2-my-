@@ -1,4 +1,4 @@
-// пример, как это использовать:
+
 #include <iostream>
 #include <random> // для std::mt19937
 #include <ctime>  // для std::time
