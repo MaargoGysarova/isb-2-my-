@@ -10,7 +10,6 @@ def freq_bit_test(bits: str):
         else:
             sum += 1
     itog = math.erfc((sum / math.sqrt(128)) / math.sqrt(2))
-    print(itog)
     return itog
 
 
@@ -66,13 +65,19 @@ def test_longst_seq(bits):
 if __name__ == "__main__":
     text = str
 
-    with open("ge_random_tetx.txt", "r+") as file:
+    with open("gen_binary_text.txt", "r+") as file:
         text = file.readline()
 
+    print("Бинарная последовательность: ")
     print(text)
 
     bits = list(text)
 
+    print("Частотный побитовый тест: ")
     print(freq_bit_test(bits))
 
+    print("Тест на одинаковые подряд идущие биты: ")
     print(ident_secutive_bits_test(bits))
+
+    print("Тест на самую длинную последовательность единиц в блоке: ")
+    print(test_longst_seq(bits))
