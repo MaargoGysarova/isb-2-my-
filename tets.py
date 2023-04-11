@@ -2,9 +2,16 @@ import math
 from scipy.special import gammaincc
 
 
-def freq_bit_test(bits: str):
+## чтение файла
+def read_file(file_name):
+    with open(file_name, "r+") as file:
+        text_bin = file.readline()
+    return text_bin
+
+
+def freq_bit_test(bits_in_def: list):
     sum = 0
-    for i in bits:
+    for i in bits_in_def:
         if i == 0:
             sum += -1
         else:
@@ -13,13 +20,12 @@ def freq_bit_test(bits: str):
     return itog
 
 
-def ident_secutive_bits_test(bits):
-    freq_1 = bits.count('1') / 128
-    c_f = bits.count('0')
-    runs = [bits[0]]
+def ident_secutive_bits_test(bits_in_def: list):
+    freq_1 = bits_in_def.count('1') / 128
+    runs = [bits_in_def[0]]
     for i in range(1, 128):
-        if bits[i] != bits[i - 1]:
-            runs.append(bits[i])
+        if bits_in_def[i] != bits_in_def[i - 1]:
+            runs.append(bits_in_def[i])
 
     num = len(runs)
     P = math.erfc(abs(num - 2 * 128 * freq_1 * (1 - freq_1)) / (2 * math.sqrt(2 * 128) * freq_1 * (1 - freq_1)))
@@ -27,12 +33,12 @@ def ident_secutive_bits_test(bits):
     return P > 0.01
 
 
-def test_longst_seq(bits):
+def test_longst_seq(bits_in_def: list):
     c_b = 128 // 8
     mas_count = []
 
     for i in range(c_b):
-        block = bits[i * 8: (i + 1) * 8]
+        block = bits_in_def[i * 8: (i + 1) * 8]
         one = 0
         max_one_in_block = 0
         max_run = 0
@@ -59,14 +65,12 @@ def test_longst_seq(bits):
     P = gammaincc(3 / 2, X / 2)
 
     print(P)
-    return (P > 0.01)
+    return P > 0.01
 
 
 if __name__ == "__main__":
     text = str
-
-    with open("gen_binary_text.txt", "r+") as file:
-        text = file.readline()
+    text = read_file("gen_binary_text.txt")
 
     print("Бинарная последовательность: ")
     print(text)
